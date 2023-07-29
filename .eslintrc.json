@@ -5,6 +5,8 @@
         "prettier/prettier": "warn",
         "react/react-in-jsx-scope": 0,
         "react/jsx-no-useless-fragment": "warn",
+        "react/require-default-props": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
         "no-console": "off",
         "prefer-const": "warn",
         "react/function-component-definition": "off",
