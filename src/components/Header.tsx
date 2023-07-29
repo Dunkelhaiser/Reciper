@@ -1,10 +1,10 @@
 "use client";
 
-import { FaRegCompass, FaSignInAlt } from "react-icons/fa";
-import { HiHome } from "react-icons/hi";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { FaRegCompass, FaSignInAlt } from "react-icons/fa";
+import { HiHome } from "react-icons/hi";
 import useToggle from "@/hooks/useToggle";
 import Hamburger from "./Hamburger";
 
@@ -64,6 +64,15 @@ const Header = () => {
                             <FaUserCircle className="hidden text-2xl md:inline" />
                             <span className="md:hidden">Profile</span>
                         </Link>
+                    </li>
+                    <li>
+                        <button
+                            onClick={signOut}
+                            className="text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                        >
+                            <FaSignOutAlt className="hidden text-2xl md:inline" />
+                            <span className="md:hidden">Sign out</span>
+                        </button>
                     </li> */}
                     <li>
                         <Link

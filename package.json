@@ -17,6 +17,7 @@
         "eslint": "8.46.0",
         "eslint-config-next": "13.4.12",
         "next": "13.4.12",
+        "next-auth": "^4.22.3",
         "postcss": "8.4.27",
         "react": "18.2.0",
         "react-dom": "18.2.0",
@@ -29,9 +30,9 @@
         "eslint-config-airbnb-typescript": "^17.1.0",
         "eslint-config-prettier": "^8.9.0",
         "eslint-plugin-prettier": "^5.0.0",
+        "husky": "^8.0.0",
         "lint-staged": "^13.2.3",
-        "prettier-plugin-tailwindcss": "^0.4.1",
-        "husky": "^8.0.0"
+        "prettier-plugin-tailwindcss": "^0.4.1"
     },
     "lint-staged": {
         "./src/**/*.{ts,tsx}": [
