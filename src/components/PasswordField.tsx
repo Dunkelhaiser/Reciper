@@ -11,7 +11,7 @@ interface Props {
     value?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: UseFormRegister<any>;
-    errors?: FieldError | string | undefined | null;
+    errors?: FieldError;
 }
 
 const PasswordField: React.FC<Props> = ({ name, placeholder, value, register, errors }) => {

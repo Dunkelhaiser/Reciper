@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { FaBell, FaRegCompass, FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { signOut, useSession } from "next-auth/react";
-import useToggle from "@/hooks/useToggle";
+import useToggle from "@hooks/useToggle";
 import Hamburger from "./Hamburger";
 
 const Header = () => {

@@ -7,11 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import PasswordField from "@/components/PasswordField";
-import { SignInForm, schema } from "@/models/schemes/SignIn";
-import Form from "@/components/Form";
+import Button from "@components/Button";
+import Input from "@components/Input";
+import PasswordField from "@components/PasswordField";
+import { SignInForm, schema } from "@models/schemes/SignIn";
+import Form from "@components/Form";
 
 const SignUp = () => {
     const searchParams = useSearchParams();

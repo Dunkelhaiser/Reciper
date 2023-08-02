@@ -8,11 +8,11 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast/headless";
 import axios from "axios";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import PasswordField from "@/components/PasswordField";
-import { SignUpForm, schema } from "@/models/schemes/SignUp";
-import Form from "@/components/Form";
+import Button from "@components/Button";
+import Input from "@components/Input";
+import PasswordField from "@components/PasswordField";
+import { SignUpForm, schema } from "@models/schemes/SignUp";
+import Form from "@components/Form";
 
 const SignUp = () => {
     const session = useSession();
