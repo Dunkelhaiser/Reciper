@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import PasswordField from "@/components/PasswordField";
@@ -31,11 +32,13 @@ const SignUp = () => {
         mutationFn: (data: SignInForm) => signInHandler(data),
         onSuccess(data) {
             if (data?.error) {
-                alert("Invalid credentials");
+                toast.error("Invalid credentials");
+            } else {
+                toast.success("Signed in successfully");
             }
         },
-        onError(err) {
-            alert(err);
+        onError() {
+            toast.error("Failed to sign in");
         },
     });
 

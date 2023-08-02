@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast/headless";
 import axios from "axios";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
@@ -31,13 +32,14 @@ const SignUp = () => {
     const { mutate, isLoading } = useMutation({
         mutationFn: (data: SignUpForm) => signUp(data),
         onSuccess() {
+            toast.success("Signed up successfully");
             router.push("/sign_in");
         },
         onError(err) {
             if (axios.isAxiosError(err)) {
-                alert(err.response?.data.message);
+                toast.error(err.response?.data.message);
             } else {
-                alert("Something went wrong");
+                toast.error("Failed to sign up");
             }
         },
     });
