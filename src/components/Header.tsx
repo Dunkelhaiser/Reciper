@@ -3,32 +3,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { FaBell, FaRegCompass, FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+import { FaBell, FaRegCompass, FaSignInAlt, FaUserCircle } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
-import { signOut, useSession } from "next-auth/react";
-import useToggle from "@hooks/useToggle";
-import Hamburger from "./Hamburger";
 
 const Header = () => {
-    const [expanded, setExpanded] = useToggle();
     const route = usePathname();
     const session = useSession();
 
     return (
-        <header className="fixed top-0 z-[9999] flex w-full flex-row items-center justify-between bg-white px-8 py-2 shadow lg:px-20 xl:px-40">
-            <Link href="/">
+        <header className="fixed bottom-0 z-[9999] flex w-full flex-row items-center justify-between bg-white px-8 py-4 shadow md:bottom-auto md:top-0 md:py-2 lg:px-20 xl:px-40">
+            <Link href="/" className="hidden md:inline">
                 <Image src="/logo.webp" alt="Logo" className="h-12" width={150} height={150} priority />
             </Link>
-            <Hamburger onClick={() => setExpanded()} expanded={expanded} className="md:hidden" />
-            <nav
-                className={`transform max-[767px]:absolute max-[767px]:left-8 max-[767px]:right-8  max-[767px]:rounded-lg max-[767px]:bg-white max-[767px]:p-8  max-[767px]:shadow-lg max-[767px]:transition-all max-[767px]:duration-300 max-[767px]:ease-out
-                ${
-                    expanded
-                        ? "max-[767px]:top-[5.5rem] max-[767px]:translate-y-0 max-[767px]:opacity-100"
-                        : "max-[767px]:top-[-1px] max-[767px]:-translate-y-full max-[767px]:opacity-0"
-                }`}
-            >
-                <ul className="flex list-none flex-col items-center gap-8 md:flex-row md:items-start md:gap-20">
+            <nav className="w-full md:w-auto">
+                <ul className="flex list-none flex-row justify-between gap-8 md:items-start md:gap-20">
                     <li>
                         <Link
                             href="/"
@@ -39,22 +28,20 @@ const Header = () => {
                                     : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                             }`}
                         >
-                            <HiHome className="hidden text-2xl md:inline" />
-                            <span className="md:hidden">Home</span>
+                            <HiHome className="text-2xl" />
                         </Link>
                     </li>
                     <li>
                         <Link
-                            href="/discover"
-                            aria-label="Discover"
+                            href="/explore"
+                            aria-label="Explore"
                             className={`no-underline transition ${
-                                route === "/discover"
+                                route === "/explore"
                                     ? "text-orange-300"
                                     : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                             }`}
                         >
-                            <FaRegCompass className="hidden text-2xl md:inline" />
-                            <span className="md:hidden">Discover</span>
+                            <FaRegCompass className="text-2xl" />
                         </Link>
                     </li>
                     {session.data?.user ? (
@@ -69,8 +56,7 @@ const Header = () => {
                                             : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                                     }`}
                                 >
-                                    <FaBell className="hidden text-2xl md:inline" />
-                                    <span className="md:hidden">Notifications</span>
+                                    <FaBell className="text-2xl" />
                                 </Link>
                             </li>
                             <li>
@@ -83,30 +69,18 @@ const Header = () => {
                                             : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                                     }`}
                                 >
-                                    {session.data.user.image ? (
+                                    {session.data?.user.image ? (
                                         <Image
-                                            src={session.data.user.image}
+                                            src={session.data?.user.image}
                                             alt="Profile"
                                             className="h-[25.24px] rounded-full"
                                             width={150}
                                             height={150}
                                         />
                                     ) : (
-                                        <FaUserCircle className="hidden text-2xl md:inline" />
+                                        <FaUserCircle className="text-2xl" />
                                     )}
-
-                                    <span className="md:hidden">Profile</span>
                                 </Link>
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    onClick={() => signOut()}
-                                    className="text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
-                                >
-                                    <FaSignOutAlt className="hidden text-2xl md:inline" />
-                                    <span className="md:hidden">Sign out</span>
-                                </button>
                             </li>
                         </>
                     ) : (
@@ -120,8 +94,7 @@ const Header = () => {
                                         : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                                 }`}
                             >
-                                <FaSignInAlt className="hidden text-2xl md:inline" />
-                                <span className="md:hidden">Sign in</span>
+                                <FaSignInAlt className="text-2xl" />
                             </Link>
                         </li>
                     )}

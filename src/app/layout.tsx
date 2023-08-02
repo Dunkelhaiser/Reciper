@@ -23,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Providers>
                     <Header />
                     <Toaster containerStyle={{ top: "80px" }} />
-                    <main className="mt-[64px] min-h-[calc(100vh_-_64px)] bg-stone-50 px-8 py-8 lg:px-20 xl:px-40">{children}</main>
+                    <main className="mb-[56px] min-h-[calc(100vh_-_56px)] bg-stone-50 px-8 py-8 md:mb-0 md:mt-[64px] md:min-h-[calc(100vh_-_64px)] lg:px-20 xl:px-40">
+                        {children}
+                    </main>
                 </Providers>
             </body>
         </html>

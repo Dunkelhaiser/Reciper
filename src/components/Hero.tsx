@@ -9,7 +9,7 @@ const Hero = () => {
                 </h1>
                 <p className="mt-3 text-lg text-stone-600">Discover, create, and share delicious recipes.</p>
             </div>
-            <Image className="rounded-xl" src="/hero.webp" width={2400} height={2400} alt="Cutting board with products" />
+            <Image className="rounded-xl" src="/hero.webp" width={2400} height={2400} alt="Cutting board with products" priority />
         </section>
     );
 };
