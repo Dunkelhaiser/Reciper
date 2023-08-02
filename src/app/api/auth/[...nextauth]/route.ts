@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrpyt from "bcrypt";
 import db from "../../db";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt" as const,
     },
