@@ -3,14 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { FaRegCompass, FaSignInAlt } from "react-icons/fa";
+import { FaBell, FaRegCompass, FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
+import { signOut, useSession } from "next-auth/react";
 import useToggle from "@/hooks/useToggle";
 import Hamburger from "./Hamburger";
 
 const Header = () => {
     const [expanded, setExpanded] = useToggle();
     const route = usePathname();
+    const session = useSession();
 
     return (
         <header className="fixed top-0 z-[9999] flex w-full flex-row items-center justify-between bg-white px-8 py-2 shadow lg:px-20 xl:px-40">
@@ -31,8 +33,10 @@ const Header = () => {
                         <Link
                             href="/"
                             aria-label="Home"
-                            className={`text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 ${
-                                route === "/" && "text-orange-300"
+                            className={`no-underline transition  ${
+                                route === "/"
+                                    ? "text-orange-300"
+                                    : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                             }`}
                         >
                             <HiHome className="hidden text-2xl md:inline" />
@@ -43,49 +47,84 @@ const Header = () => {
                         <Link
                             href="/discover"
                             aria-label="Discover"
-                            className={`text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 ${
-                                route === "/discover" && "text-orange-300"
+                            className={`no-underline transition ${
+                                route === "/discover"
+                                    ? "text-orange-300"
+                                    : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
                             }`}
                         >
                             <FaRegCompass className="hidden text-2xl md:inline" />
                             <span className="md:hidden">Discover</span>
                         </Link>
                     </li>
-                    {/* <li>
-                        <Link href="/profile"  aria-label="Notifications"
-                            className="text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800">
-                            <FaBell className="hidden text-2xl md:inline" />
-                            <span className="md:hidden">Notifications</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/profile"  aria-label="Profile"
-                            className="text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800">
-                            <FaUserCircle className="hidden text-2xl md:inline" />
-                            <span className="md:hidden">Profile</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <button
-                            onClick={signOut}
-                            className="text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
-                        >
-                            <FaSignOutAlt className="hidden text-2xl md:inline" />
-                            <span className="md:hidden">Sign out</span>
-                        </button>
-                    </li> */}
-                    <li>
-                        <Link
-                            href="/sign_in"
-                            aria-label="Sign In"
-                            className={`text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 ${
-                                route === "/sign_in" && "text-orange-300"
-                            }`}
-                        >
-                            <FaSignInAlt className="hidden text-2xl md:inline" />
-                            <span className="md:hidden">Sign in</span>
-                        </Link>
-                    </li>
+                    {session.data?.user ? (
+                        <>
+                            <li>
+                                <Link
+                                    href="/notifications"
+                                    aria-label="Notifications"
+                                    className={`no-underline transition ${
+                                        route === "/notifications"
+                                            ? "text-orange-300"
+                                            : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                    }`}
+                                >
+                                    <FaBell className="hidden text-2xl md:inline" />
+                                    <span className="md:hidden">Notifications</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/profile"
+                                    aria-label="Profile"
+                                    className={`no-underline transition ${
+                                        route === "/profile"
+                                            ? "text-orange-300"
+                                            : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                    }`}
+                                >
+                                    {session.data.user.image ? (
+                                        <Image
+                                            src={session.data.user.image}
+                                            alt="Profile"
+                                            className="h-[25.24px] rounded-full"
+                                            width={150}
+                                            height={150}
+                                        />
+                                    ) : (
+                                        <FaUserCircle className="hidden text-2xl md:inline" />
+                                    )}
+
+                                    <span className="md:hidden">Profile</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <button
+                                    type="button"
+                                    onClick={() => signOut()}
+                                    className="text-stone-700 no-underline transition hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                >
+                                    <FaSignOutAlt className="hidden text-2xl md:inline" />
+                                    <span className="md:hidden">Sign out</span>
+                                </button>
+                            </li>
+                        </>
+                    ) : (
+                        <li>
+                            <Link
+                                href="/sign_in"
+                                aria-label="Sign In"
+                                className={`no-underline transition ${
+                                    route === "/sign_in" || route === "/sign_up"
+                                        ? "text-orange-300"
+                                        : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                }`}
+                            >
+                                <FaSignInAlt className="hidden text-2xl md:inline" />
+                                <span className="md:hidden">Sign in</span>
+                            </Link>
+                        </li>
+                    )}
                 </ul>
             </nav>
         </header>

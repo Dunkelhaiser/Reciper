@@ -1,5 +1,5 @@
 {
-    "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript", "airbnb/hooks", "plugin:prettier/recommended"],
+    "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript", "plugin:prettier/recommended"],
     "plugins": ["prettier"],
     "rules": {
         "prettier/prettier": "warn",
@@ -16,6 +16,12 @@
         "no-plusplus": "off",
         "react/self-closing-comp": "warn",
         "import/prefer-default-export": "off",
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "react/prop-types": "off",
+        "import/order": "warn",
+        "react/button-has-type": "off"
+    },
+    "parserOptions": {
+        "project": ["**/tsconfig.json"]
     }
 }
