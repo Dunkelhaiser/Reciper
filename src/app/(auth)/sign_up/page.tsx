@@ -5,10 +5,13 @@ import { redirect, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import PasswordField from "@/components/PasswordField";
 import { SignUpForm, schema } from "@/models/schemes/SignUp";
+import Form from "@/components/Form";
 
 const SignUp = () => {
     const session = useSession();
@@ -20,43 +23,44 @@ const SignUp = () => {
         formState: { errors, isValid },
     } = useForm<SignUpForm>({ resolver: zodResolver(schema), mode: "onBlur" });
 
-    if (session.status === "authenticated") return redirect("/");
-
     const signUp = async (data: SignUpForm) => {
-        try {
-            const res = await fetch("/api/auth/sign_up", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
-            const json = await res.json();
-            if (res.ok) {
-                router.push("/sign_in");
-            } else {
-                alert(json.message);
-            }
-        } catch (err) {
-            alert("Failed to sign up");
-        }
+        const res = await axios.post("/api/auth/sign_up", data);
+        return res.data;
     };
 
+    const { mutate, isLoading } = useMutation({
+        mutationFn: (data: SignUpForm) => signUp(data),
+        onSuccess() {
+            router.push("/sign_in");
+        },
+        onError(err) {
+            if (axios.isAxiosError(err)) {
+                alert(err.response?.data.message);
+            } else {
+                alert("Something went wrong");
+            }
+        },
+    });
+
+    if (session.status === "authenticated") return redirect("/");
+
     return (
-        <form className="m-auto max-w-lg rounded-lg bg-white px-10 py-12 shadow md:px-20" onSubmit={handleSubmit(signUp)}>
-            <h1 className="mb-4 text-4xl font-bold">Sign Up</h1>
+        <Form label="Sign Up" onSubmit={handleSubmit((data) => mutate(data))}>
             <div className="mb-2 flex flex-col gap-2 md:mb-4">
                 <Input name="username" placeholder="Username" register={register} errors={errors.username} />
                 <Input name="email" placeholder="Email" register={register} errors={errors.email} />
                 <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} />
                 <PasswordField name="confirmPassword" placeholder="Confirm Password" register={register} errors={errors.confirmPassword} />
             </div>
-            <Button label="Sign Up" className="mt-4 w-full" type="submit" disabled={!isValid} />
+            <Button label="Sign Up" className="mt-4 w-full" type="submit" disabled={!isValid || isLoading} />
             <Link
                 href="/sign_in"
                 className="mt-4 block text-center text-orange-400 transition hover:text-orange-300 focus-visible:text-orange-300 active:text-orange-400"
             >
                 Already have an account? Sign in now!
             </Link>
-        </form>
+        </Form>
     );
 };
+
 export default SignUp;

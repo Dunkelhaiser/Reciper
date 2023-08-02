@@ -4,11 +4,13 @@ import { signIn, useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import PasswordField from "@/components/PasswordField";
 import { SignInForm, schema } from "@/models/schemes/SignIn";
+import Form from "@/components/Form";
 
 const SignUp = () => {
     const searchParams = useSearchParams();
@@ -20,22 +22,27 @@ const SignUp = () => {
         formState: { errors, isValid },
     } = useForm<SignInForm>({ resolver: zodResolver(schema), mode: "onBlur" });
 
-    if (session.status === "authenticated") return redirect("/");
-
     const signInHandler = async (data: SignInForm) => {
-        try {
-            const res = await signIn("credentials", { ...data, callbackUrl, redirect: false });
-            if (res && res.error) {
-                alert("Invalid credentials");
-            }
-        } catch {
-            alert("Failed to sign in");
-        }
+        const res = await signIn("credentials", { ...data, callbackUrl, redirect: false });
+        return res;
     };
 
+    const { mutate, isLoading } = useMutation({
+        mutationFn: (data: SignInForm) => signInHandler(data),
+        onSuccess(data) {
+            if (data?.error) {
+                alert("Invalid credentials");
+            }
+        },
+        onError(err) {
+            alert(err);
+        },
+    });
+
+    if (session.status === "authenticated") return redirect("/");
+
     return (
-        <form className="m-auto max-w-lg rounded-lg bg-white px-10 py-12 shadow md:px-20" onSubmit={handleSubmit(signInHandler)}>
-            <h1 className="mb-4 text-4xl font-bold">Sign In </h1>
+        <Form label="Sign In" onSubmit={handleSubmit((data) => mutate(data))}>
             <Button
                 label="Google"
                 onClick={() => signIn("google")}
@@ -46,14 +53,15 @@ const SignUp = () => {
                 <Input name="email" placeholder="Email" register={register} errors={errors.email} />
                 <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} />
             </div>
-            <Button label="Sign In" className="mt-4 w-full" type="submit" disabled={!isValid} />
+            <Button label="Sign In" className="mt-4 w-full" type="submit" disabled={!isValid || isLoading} />
             <Link
                 href="/sign_up"
                 className="mt-4 block text-center text-orange-400 transition hover:text-orange-300 focus-visible:text-orange-300 active:text-orange-400"
             >
                 Don&apos;t have an account? Sign up now!
             </Link>
-        </form>
+        </Form>
     );
 };
+
 export default SignUp;
