@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
+import { useSession, signIn as signInNext } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,7 @@ import Input from "@components/Input";
 import PasswordField from "@components/PasswordField";
 import { SignInForm, schema } from "@models/schemes/SignIn";
 import Form from "@components/Form";
+import { signIn } from "@lib/auth";
 
 const SignIn = () => {
     const searchParams = useSearchParams();
@@ -23,13 +24,8 @@ const SignIn = () => {
         formState: { errors, isValid },
     } = useForm<SignInForm>({ resolver: zodResolver(schema), mode: "onBlur" });
 
-    const signInHandler = async (data: SignInForm) => {
-        const res = await signIn("credentials", { ...data, callbackUrl, redirect: false });
-        return res;
-    };
-
     const { mutate, isLoading } = useMutation({
-        mutationFn: (data: SignInForm) => signInHandler(data),
+        mutationFn: (data: SignInForm) => signIn(data, callbackUrl),
         onSuccess(data) {
             if (data?.error) {
                 toast.error("Invalid credentials");
@@ -48,7 +44,7 @@ const SignIn = () => {
         <Form label="Sign In" onSubmit={handleSubmit((data) => mutate(data))}>
             <Button
                 label="Google"
-                onClick={() => signIn("google")}
+                onClick={() => signInNext("google")}
                 className="mt-2 w-full bg-sky-600 hover:bg-sky-500 focus-visible:bg-sky-500 active:bg-sky-600"
             />
             <p className="mb-1 mt-3 text-center text-lg font-medium uppercase">or</p>

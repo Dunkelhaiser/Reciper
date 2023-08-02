@@ -6,13 +6,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-hot-toast/headless";
+import toast from "react-hot-toast";
 import axios from "axios";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import PasswordField from "@components/PasswordField";
 import { SignUpForm, schema } from "@models/schemes/SignUp";
 import Form from "@components/Form";
+import { signUp } from "@lib/auth";
 
 const SignUp = () => {
     const session = useSession();
@@ -23,11 +24,6 @@ const SignUp = () => {
         handleSubmit,
         formState: { errors, isValid },
     } = useForm<SignUpForm>({ resolver: zodResolver(schema), mode: "onBlur" });
-
-    const signUp = async (data: SignUpForm) => {
-        const res = await axios.post("/api/auth/sign_up", data);
-        return res.data;
-    };
 
     const { mutate, isLoading } = useMutation({
         mutationFn: (data: SignUpForm) => signUp(data),
