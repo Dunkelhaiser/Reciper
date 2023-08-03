@@ -14,7 +14,7 @@ const Providers = ({ children }: Props) => {
     return (
         <SessionProvider>
             <QueryClientProvider client={queryClient}>
-                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     {children}
                 </ThemeProvider>
             </QueryClientProvider>
