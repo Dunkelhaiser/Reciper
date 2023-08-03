@@ -52,7 +52,7 @@ const SignIn = () => {
                 <Input name="email" placeholder="Email" register={register} errors={errors.email} />
                 <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} />
             </div>
-            <Button label="Sign In" className="mt-4 w-full" type="submit" disabled={!isValid || isLoading} />
+            <Button label="Sign In" className="mt-4 w-full" type="submit" loading={isLoading} disabled={!isValid} />
             <Link
                 href="/sign_up"
                 className="mt-4 block text-center text-orange-400 transition hover:text-orange-300 focus-visible:text-orange-300 active:text-orange-400"
