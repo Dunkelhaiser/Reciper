@@ -26,7 +26,7 @@ const Input: React.FC<Props> = ({ name, type = "text", placeholder, value, regis
                 min={min}
                 placeholder={placeholder}
                 {...(isRegistered ? register(name) : null)}
-                className={`w-full border-b bg-transparent p-2 text-stone-700 outline-none placeholder:text-stone-400
+                className={`w-full border-b bg-transparent p-2 text-inherit outline-none placeholder:text-stone-400
                 ${errors ? "border-red-400" : "border-stone-700"}`}
                 onKeyUp={onKeyUp || undefined}
                 aria-invalid={errors ? "true" : "false"}

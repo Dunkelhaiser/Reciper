@@ -12,7 +12,7 @@ const Header = () => {
     const session = useSession();
 
     return (
-        <header className="fixed bottom-0 z-[9999] flex w-full flex-row items-center justify-between bg-white px-8 py-4 shadow md:bottom-auto md:top-0 md:py-2 lg:px-20 xl:px-40">
+        <header className="fixed bottom-0 z-[9999] flex w-full flex-row items-center justify-between bg-white px-8 py-4 shadow dark:bg-stone-900 md:bottom-auto md:top-0 md:py-2 lg:px-20 xl:px-40">
             <Link href="/" className="hidden md:inline">
                 <Image src="/logo.webp" alt="Logo" className="h-12" width={150} height={150} priority />
             </Link>
@@ -25,7 +25,7 @@ const Header = () => {
                             className={`no-underline transition  ${
                                 route === "/"
                                     ? "text-orange-300"
-                                    : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                    : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 dark:text-stone-400 dark:hover:text-stone-500 dark:focus-visible:text-stone-500 dark:active:text-stone-300"
                             }`}
                         >
                             <HiHome className="text-2xl" />
@@ -38,7 +38,7 @@ const Header = () => {
                             className={`no-underline transition ${
                                 route === "/explore"
                                     ? "text-orange-300"
-                                    : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                    : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 dark:text-stone-400 dark:hover:text-stone-500 dark:focus-visible:text-stone-500 dark:active:text-stone-300"
                             }`}
                         >
                             <FaRegCompass className="text-2xl" />
@@ -53,7 +53,7 @@ const Header = () => {
                                     className={`no-underline transition ${
                                         route === "/notifications"
                                             ? "text-orange-300"
-                                            : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                            : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 dark:text-stone-400 dark:hover:text-stone-500 dark:focus-visible:text-stone-500 dark:active:text-stone-300"
                                     }`}
                                 >
                                     <FaBell className="text-2xl" />
@@ -66,7 +66,7 @@ const Header = () => {
                                     className={`no-underline transition ${
                                         route === "/profile"
                                             ? "text-orange-300"
-                                            : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                            : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 dark:text-stone-400 dark:hover:text-stone-500 dark:focus-visible:text-stone-500 dark:active:text-stone-300"
                                     }`}
                                 >
                                     {session.data?.user.image ? (
@@ -91,7 +91,7 @@ const Header = () => {
                                 className={`no-underline transition ${
                                     route === "/sign_in" || route === "/sign_up"
                                         ? "text-orange-300"
-                                        : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800"
+                                        : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 dark:text-stone-400 dark:hover:text-stone-500 dark:focus-visible:text-stone-500 dark:active:text-stone-300"
                                 }`}
                             >
                                 <FaSignInAlt className="text-2xl" />
