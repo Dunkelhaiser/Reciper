@@ -15,7 +15,7 @@ const Header = () => {
         <header className="fixed bottom-0 left-0 right-0 z-[9999] bg-white shadow dark:bg-stone-900 md:bottom-auto md:top-0 ">
             <div className="container flex flex-row items-center justify-between px-8 py-4 md:py-2 lg:px-20 xl:px-40">
                 <Link href="/" className="hidden md:inline">
-                    <Image src="/logo.png" alt="Logo" className="h-12" width={150} height={150} priority />
+                    <Image src="/logo.svg" alt="Logo" className="h-12" width={150} height={150} priority />
                 </Link>
                 <nav className="w-full md:w-auto">
                     <ul className="flex list-none flex-row justify-between gap-8 md:items-start md:gap-20">
