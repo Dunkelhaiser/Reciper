@@ -50,7 +50,9 @@ const SignUp = () => {
                 <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} />
                 <PasswordField name="confirmPassword" placeholder="Confirm Password" register={register} errors={errors.confirmPassword} />
             </div>
-            <Button label="Sign Up" className="mt-4 w-full" type="submit" loading={isLoading} disabled={!isValid} />
+            <Button className="mt-4 w-full" type="submit" loading={isLoading} disabled={!isValid}>
+                Sign Up
+            </Button>
             <Link
                 href="/sign_in"
                 className="mt-4 block text-center text-orange-400 transition hover:text-orange-300 focus-visible:text-orange-300 active:text-orange-400"

@@ -10,7 +10,6 @@ import { mergeRefs } from "react-merge-refs";
 type Props = AriaButtonProps &
     ButtonHTMLAttributes<HTMLButtonElement> &
     VariantProps<typeof variants> & {
-        label: string;
         loading?: boolean;
     };
 
@@ -136,7 +135,7 @@ const variants = cva(
 );
 
 const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
-    const { label, className, loading, disabled, variant, size, ...rest } = props;
+    const { children, className, loading, disabled, variant, size, ...rest } = props;
     const ref = useRef<HTMLButtonElement>(null);
     const { buttonProps, isPressed } = useButton({ ...props, isDisabled: disabled || loading }, ref);
     const { hoverProps, isHovered } = useHover(props);
@@ -161,12 +160,12 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
                 />
             )}
             <span
-                className={clsx("transition", {
+                className={clsx("flex items-center justify-center gap-2 transition", {
                     "opacity-0": loading,
                     "opacity-100": !loading,
                 })}
             >
-                {label}
+                {children}
             </span>
         </button>
     );
