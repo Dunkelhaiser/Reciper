@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "@components/Header";
 import Providers from "@components/Providers";
 import "./globals.css";
+import { cn } from "@utils/cn";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +19,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
-            <body className={inter.className}>
+        <html lang="en" className="antialiased">
+            <body className={cn("bg-stone-50 text-stone-800 dark:bg-neutral-800 dark:text-stone-50", inter.className)}>
                 <Providers>
                     <Header />
                     <Toaster containerStyle={{ top: "80px" }} />
-                    <main className="mb-[56px] flex h-full min-h-[calc(100vh_-_56px)] flex-col bg-stone-50 px-8 py-8 text-stone-800 dark:bg-neutral-800 dark:text-stone-50 md:mb-0 md:mt-[64px] md:min-h-[calc(100vh_-_64px)] lg:px-20 xl:px-40">
+                    <main
+                        className={cn(
+                            "container mb-[56px] flex h-full min-h-[calc(100vh_-_56px)] flex-col px-8 py-8 md:mb-0 md:mt-[64px] md:min-h-[calc(100vh_-_64px)] lg:px-20 xl:px-40"
+                        )}
+                    >
                         {children}
                     </main>
                 </Providers>

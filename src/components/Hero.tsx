@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Hero = () => {
     return (
-        <section className="mx-auto grid max-w-7xl gap-4 md:min-h-[calc(100vh_-_64px-_4rem)] md:grid-cols-2 md:items-center md:gap-8 xl:gap-20">
+        <section className="mx-auto grid gap-4 md:flex-grow md:grid-cols-2 md:items-center md:gap-8 xl:gap-20">
             <div>
                 <h1 className="block text-3xl font-bold text-stone-800 dark:text-stone-200 sm:text-4xl lg:text-6xl lg:leading-tight">
                     Start your food journey with <span className="text-orange-400">Reciper</span>
