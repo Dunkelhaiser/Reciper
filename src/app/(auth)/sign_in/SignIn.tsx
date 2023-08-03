@@ -42,11 +42,7 @@ const SignIn = () => {
 
     return (
         <Form label="Sign In" onSubmit={handleSubmit((data) => mutate(data))}>
-            <Button
-                label="Google"
-                onClick={() => signInNext("google")}
-                className="mt-2 w-full bg-sky-600 hover:bg-sky-500 focus-visible:bg-sky-500 active:bg-sky-600"
-            />
+            <Button label="Google" variant="google" onClick={() => signInNext("google")} className="mt-2 w-full" />
             <p className="mb-1 mt-3 text-center text-lg font-medium uppercase">or</p>
             <div className="mb-2 flex flex-col gap-2 md:mb-4">
                 <Input name="email" placeholder="Email" register={register} errors={errors.email} />

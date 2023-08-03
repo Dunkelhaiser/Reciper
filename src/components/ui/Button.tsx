@@ -113,6 +113,14 @@ const variants = cva(
                     "disabled:!text-stone-800/50",
                     "disabled:!bg-transparent",
                 ],
+                google: [
+                    "bg-sky-600",
+                    "text-stone-50",
+                    "ring-sky-600",
+                    "data-[hovered=true]:bg-sky-500",
+                    "data-[pressed=true]:bg-sky-600",
+                    "disabled:!bg-sky-600/50",
+                ],
             },
             size: {
                 small: ["text-sm", "px-[0.6563rem]", "py-[0.4063rem]"],
