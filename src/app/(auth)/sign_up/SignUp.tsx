@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import axios from "axios";
+import { AxiosError } from "axios";
 import Button from "@ui/Button";
 import Input from "@ui/Input";
 import PasswordField from "@ui/PasswordField";
@@ -30,7 +30,7 @@ const SignUp = () => {
             router.push("/sign_in");
         },
         onError(err) {
-            if (axios.isAxiosError(err)) {
+            if (err instanceof AxiosError) {
                 toast.error(err.response?.data.message);
             } else {
                 toast.error("Failed to sign up");
