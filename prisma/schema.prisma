@@ -40,11 +40,12 @@ model User {
     lastName      String?
     username      String?   @unique
     email         String?   @unique
-    emailVerified Boolean?
+    emailVerified Boolean?  @default(false)
     password      String?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    verificationTokens VerificationToken[]
     recipes       Recipe[]
     votes         Vote[]
     comments      Comment[]
@@ -57,11 +58,13 @@ model User {
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
-
-    @@unique([identifier, token])
+    id          String   @id @default(cuid())
+    token       String   @unique
+    activatedAt DateTime?
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model Recipe {

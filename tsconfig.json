@@ -26,6 +26,7 @@
             "@ui/*": ["./src/components/ui/*"],
             "@hooks/*": ["./src/hooks/*"],
             "@models/*": ["./src/models/*"],
+            "@db": ["./src/app/api/db.ts"],
             "@/*": ["./src/*"]
         }
     },

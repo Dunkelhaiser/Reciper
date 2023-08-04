@@ -28,7 +28,7 @@ const SignIn = () => {
         mutationFn: (data: SignInForm) => signIn(data, callbackUrl),
         onSuccess(data) {
             if (data?.error) {
-                toast.error("Invalid credentials");
+                toast.error(data.error);
             } else {
                 toast.success("Signed in successfully");
             }

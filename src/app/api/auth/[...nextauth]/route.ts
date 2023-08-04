@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrpyt from "bcrypt";
-import db from "../../db";
+import db from "@db";
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -36,18 +36,18 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) return null;
+                if (!credentials?.email || !credentials?.password) throw new Error("Invalid credentials");
 
                 const user = await db.user.findUnique({
                     where: { email: credentials.email },
                 });
 
-                if (!user) return null;
-                if (!user.password) return null;
+                if (!user || !user.password) throw new Error("Invalid credentials");
 
                 const passwordValid = await bcrpyt.compare(credentials.password, user.password);
+                if (!passwordValid) throw new Error("Invalid credentials");
 
-                if (!passwordValid) return null;
+                if (!user.emailVerified) throw new Error("Email is not verified");
 
                 return user;
             },

@@ -1,7 +1,19 @@
+import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
-import { schema } from "@/models/schemes/SignUp";
-import db from "../../db";
+import db from "@db";
+import { schema } from "@models/schemes/SignUp";
+import { transporter } from "@lib/nodemailer";
+
+const sendVerificationEmail = async (email: string, token: string) => {
+    const mailOptions = {
+        from: process.env.GMAIL_ADDRESS,
+        to: email,
+        subject: "Reciper - Verification",
+        html: `Click <a href="${process.env.CLIENT}/activate/${token}">here</a> to verify your account`,
+    };
+    await transporter.sendMail(mailOptions);
+};
 
 const checkAvailability = async (email: string, username: string) => {
     const existingUsers = await db.user.findMany({
@@ -36,13 +48,22 @@ export const POST = async (req: NextRequest) => {
         }
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        await db.user.create({
+        const user = await db.user.create({
             data: {
                 username,
                 email,
                 password: hashedPassword,
             },
         });
+
+        const token = await db.verificationToken.create({
+            data: {
+                userId: user.id,
+                token: `${randomUUID()}${randomUUID()}${randomUUID()}${randomUUID()}`.replace(/-/g, ""),
+            },
+        });
+
+        await sendVerificationEmail(email, token.token);
 
         return NextResponse.json({ message: "User created" }, { status: 201 });
     } catch (err) {
