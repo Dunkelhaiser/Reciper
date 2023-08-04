@@ -27,6 +27,7 @@
             "@hooks/*": ["./src/hooks/*"],
             "@models/*": ["./src/models/*"],
             "@db": ["./src/app/api/db.ts"],
+            "@auth": ["./src/app/api/auth/[...nextauth]/route.ts"],
             "@/*": ["./src/*"]
         }
     },

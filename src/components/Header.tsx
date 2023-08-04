@@ -3,13 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { FaBell, FaRegCompass, FaSignInAlt, FaUserCircle } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
+import { Session } from "next-auth";
 
-const Header = () => {
+interface Props {
+    session: Session | null;
+}
+
+const Header = ({ session }: Props) => {
     const route = usePathname();
-    const session = useSession();
 
     return (
         <header className="fixed bottom-0 left-0 right-0 z-[9999] bg-white shadow dark:bg-stone-900 md:bottom-auto md:top-0 ">
@@ -45,7 +48,7 @@ const Header = () => {
                                 <FaRegCompass className="text-2xl" />
                             </Link>
                         </li>
-                        {session.data?.user ? (
+                        {session?.user ? (
                             <>
                                 <li>
                                     <Link
@@ -70,9 +73,9 @@ const Header = () => {
                                                 : "text-stone-700 hover:text-stone-600 focus-visible:text-stone-600 active:text-stone-800 dark:text-stone-400 dark:hover:text-stone-500 dark:focus-visible:text-stone-500 dark:active:text-stone-300"
                                         }`}
                                     >
-                                        {session.data?.user.image ? (
+                                        {session?.user.image ? (
                                             <Image
-                                                src={session.data?.user.image}
+                                                src={session?.user.image}
                                                 alt="Profile"
                                                 className="h-[25.24px] rounded-full"
                                                 width={150}

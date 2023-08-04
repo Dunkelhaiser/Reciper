@@ -1,7 +1,7 @@
 "use client";
 
-import { useSession, signIn as signInNext } from "next-auth/react";
-import { redirect, useSearchParams } from "next/navigation";
+import { signIn as signInNext } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -17,7 +17,6 @@ import { signIn } from "@lib/auth";
 const SignIn = () => {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") ?? "/";
-    const session = useSession();
     const {
         register,
         handleSubmit,
@@ -31,14 +30,14 @@ const SignIn = () => {
                 toast.error(data.error);
             } else {
                 toast.success("Signed in successfully");
+                // eslint-disable-next-line no-restricted-globals
+                location.reload();
             }
         },
         onError() {
             toast.error("Failed to sign in");
         },
     });
-
-    if (session.status === "authenticated") return redirect("/");
 
     return (
         <Form label="Sign In" onSubmit={handleSubmit((data) => mutate(data))}>

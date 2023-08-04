@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@auth";
 import Header from "@components/Header";
 import Providers from "@components/Providers";
-import "./globals.css";
 import { cn } from "@utils/cn";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +19,14 @@ export const metadata: Metadata = {
     applicationName: "Reciper",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+    const session = await getServerSession(authOptions);
+
     return (
         <html lang="en" className="antialiased">
             <body className={cn("bg-stone-50 text-stone-800 dark:bg-neutral-800 dark:text-stone-50", inter.className)}>
                 <Providers>
-                    <Header />
+                    <Header session={session} />
                     <Toaster containerStyle={{ top: "80px" }} />
                     <main
                         className={cn(

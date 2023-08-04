@@ -1,7 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -16,7 +15,6 @@ import Form from "@components/Form";
 import { signUp } from "@lib/auth";
 
 const SignUp = () => {
-    const session = useSession();
     const router = useRouter();
 
     const {
@@ -39,8 +37,6 @@ const SignUp = () => {
             }
         },
     });
-
-    if (session.status === "authenticated") return redirect("/");
 
     return (
         <Form label="Sign Up" onSubmit={handleSubmit((data) => mutate(data))}>
