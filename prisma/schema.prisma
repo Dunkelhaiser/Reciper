@@ -45,6 +45,15 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    recipes       Recipe[]
+    votes         Vote[]
+    comments      Comment[]
+    commentVotes  CommentVote[]
+    subscriptions Subscription[]
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@index([username, email])
 }
 
 model VerificationToken {
@@ -53,4 +62,102 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Recipe {
+    id          String   @id @default(cuid())
+    title       String
+    description String?
+    ingredients String[]
+    instructions String[]
+    image       String?
+    tags        Tag[]
+    category    Category? @relation(fields: [categoryId], references: [id])
+    categoryId  String?
+    author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId    String
+    comments    Comment[]
+    votes       Vote[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([title, description])
+}
+
+model Tag {
+    id          String   @id @default(cuid())
+    label       String   @unique
+    recipes     Recipe[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([label])
+}
+
+model Category{
+    id          String   @id @default(cuid())
+    title       String   @unique
+    recipes     Recipe[]
+    subscriptions Subscription[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([title])
+}
+
+model Comment {
+    id          String   @id @default(cuid())
+    content     String
+    author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId    String
+    recipe      Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId    String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    replyToId   String?
+    replyTo     Comment? @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    replies     Comment[] @relation("ReplyTo")
+
+    votes       CommentVote[]
+}
+
+enum VoteType {
+    LIKE
+    DISLIKE
+}
+
+model CommentVote {
+    comment     Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+    commentId   String
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
+    type        VoteType
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@id([userId, commentId])
+}
+
+model Vote{
+    recipe      Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId    String
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
+    type        VoteType
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@id([userId, recipeId])
+}
+
+model Subscription{
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
+    category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    categoryId  String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@id([userId, categoryId])
 }
