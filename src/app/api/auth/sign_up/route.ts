@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
+import { z as zod } from "zod";
 import db from "@db";
 import { schema } from "@models/schemes/SignUp";
 import { transporter } from "@lib/nodemailer";
@@ -36,11 +37,7 @@ const checkAvailability = async (email: string, username: string) => {
 export const POST = async (req: NextRequest) => {
     try {
         const { username, email, password, confirmPassword } = await req.json();
-        try {
-            await schema.parseAsync({ username, email, password, confirmPassword });
-        } catch {
-            return NextResponse.json({ message: "Invalid data" }, { status: 400 });
-        }
+        await schema.parseAsync({ username, email, password, confirmPassword });
 
         const isAvailable = await checkAvailability(email, username);
         if (isAvailable?.error) {
@@ -67,6 +64,9 @@ export const POST = async (req: NextRequest) => {
 
         return NextResponse.json({ message: "User created" }, { status: 201 });
     } catch (err) {
+        if (err instanceof zod.ZodError) {
+            return NextResponse.json({ message: err.errors[0].message }, { status: 422 });
+        }
         return NextResponse.json({ message: "Failed to sign up" }, { status: 500 });
     }
 };
