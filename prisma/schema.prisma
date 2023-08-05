@@ -34,6 +34,12 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+    user
+    moderator
+    admin
+}
+
 model User {
     id            String    @id @default(cuid())
     firstName     String?
@@ -43,6 +49,7 @@ model User {
     emailVerified Boolean?  @default(false)
     password      String?
     image         String?
+    role          Role      @default(user)
     accounts      Account[]
     sessions      Session[]
     verificationTokens VerificationToken[]
@@ -71,10 +78,11 @@ model Recipe {
     id          String   @id @default(cuid())
     title       String
     description String?
-    ingredients String[]
+    ingredients RecipeIngredient[]
+    calories    Float?
+    time        Int?
     instructions String[]
-    image       String?
-    tags        Tag[]
+    image       String
     category    Category? @relation(fields: [categoryId], references: [id])
     categoryId  String?
     author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -88,14 +96,36 @@ model Recipe {
     @@index([title, description])
 }
 
-model Tag {
+enum Unit {
+    number
+    g
+    tsp
+    cup
+}
+
+model Ingredient {
     id          String   @id @default(cuid())
     label       String   @unique
-    recipes     Recipe[]
+    description String?
+    unit        Unit 
+    calories    Float?
+    recipes     RecipeIngredient[]
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
     @@index([label])
+}
+
+model RecipeIngredient {
+    recipe      Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId    String
+    ingredient  Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+    ingredientId String
+    quantity    Float
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@id([recipeId, ingredientId])
 }
 
 model Category{
