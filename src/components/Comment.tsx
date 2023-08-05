@@ -25,8 +25,8 @@ const Comment = ({ comment }: Props) => {
                     )}
                     <span className="font-bold">{comment.author.username}</span>
                 </div>
-                <time dateTime={comment.createdAt.toISOString()} className="text-end text-sm text-stone-500">
-                    {formatDate(comment.createdAt)}
+                <time dateTime={new Date(comment.createdAt).toISOString()} className="text-end text-sm text-stone-500">
+                    {formatDate(new Date(comment.createdAt))}
                 </time>
             </div>
             <span className="text-stone-600">{comment.content}</span>

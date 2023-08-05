@@ -1,14 +1,17 @@
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { FaClock, FaFire, FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 import db from "@db";
-import Comment from "@components/Comment";
 import { formatDate } from "@utils/formatDate";
-import NewComment from "@components/NewComment";
 import Section from "@components/sections/Section";
 import Button from "@components/ui/Button";
+import { authOptions } from "@auth";
+import Comments from "@components/sections/Comments";
 
 const Recipe = async ({ params }: { params: { id: string } }) => {
+    const session = await getServerSession(authOptions);
+
     const recipe = await db.recipe.findFirst({
         where: {
             id: params.id,
@@ -115,16 +118,7 @@ const Recipe = async ({ params }: { params: { id: string } }) => {
                     ))}
                 </ol>
             </Section>
-            <Section title="Comments">
-                <NewComment />
-                <ul className="mt-6 flex max-w-2xl flex-col gap-4">
-                    {recipe.comments.map((comment) => (
-                        <li key={comment.id}>
-                            <Comment comment={comment} />
-                        </li>
-                    ))}
-                </ul>
-            </Section>
+            <Comments recipeId={recipe.id} session={session} />
         </section>
     );
 };

@@ -7,7 +7,7 @@ import db from "@db";
 
 export const authOptions: NextAuthOptions = {
     session: {
-        strategy: "jwt" as const,
+        strategy: "jwt",
     },
     pages: {
         signIn: "/sign_in",
@@ -54,14 +54,7 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        session: ({ session, token }: any) => {
-            return {
-                ...session,
-                id: token.id,
-                username: token.username,
-            };
-        },
-        jwt: ({ token, user }: any) => {
+        async jwt({ token, user }: any) {
             if (user) {
                 return {
                     ...token,
@@ -70,6 +63,13 @@ export const authOptions: NextAuthOptions = {
                 };
             }
             return token;
+        },
+        async session({ session, token }: any) {
+            // eslint-disable-next-line no-param-reassign
+            session.user.id = token.id;
+            // eslint-disable-next-line no-param-reassign
+            session.user.username = token.username;
+            return session;
         },
     },
     debug: process.env.NODE_ENV === "development",

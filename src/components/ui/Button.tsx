@@ -150,7 +150,7 @@ const variants = cva(
 );
 
 const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
-    const { children, className, loading, disabled, variant, size, ...rest } = props;
+    const { children, className, loading, disabled, variant, type = "button", size, ...rest } = props;
     const ref = useRef<HTMLButtonElement>(null);
     const { buttonProps, isPressed } = useButton({ ...props, isDisabled: disabled || loading }, ref);
     const { hoverProps, isHovered } = useHover(props);
@@ -160,6 +160,7 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
             ref={mergeRefs([ref, forwardedRef])}
             {...rest}
             className={twMerge(variants({ variant, size, className }))}
+            type={type}
             {...mergeProps(buttonProps, hoverProps, focusProps)}
             data-loading={loading}
             data-pressed={isPressed}
