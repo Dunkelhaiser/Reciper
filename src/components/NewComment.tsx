@@ -29,7 +29,7 @@ const NewComment = ({ recipeId, session }: Props) => {
         onSuccess(data) {
             toast.success(data.message);
             reset();
-            queryClient.refetchQueries();
+            queryClient.refetchQueries(["comments"]);
         },
         onError(err) {
             if (err instanceof AxiosError) {
