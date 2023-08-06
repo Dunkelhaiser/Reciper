@@ -79,7 +79,7 @@ const Recipe = async ({ params }: { params: { id: string } }) => {
                             <span className="text-sm text-stone-500">113</span>
                         </div>
                     </div>
-                    {recipe.category && (
+                    {recipe.category.length > 0 && (
                         <div className="mt-2 flex flex-row items-center gap-2">
                             <span className="text-sm text-stone-500">Categories:</span>
                             {recipe.category.map((category, i) => (
@@ -93,38 +93,42 @@ const Recipe = async ({ params }: { params: { id: string } }) => {
                     {recipe.description && <p className="mt-2 text-stone-600">{recipe.description}</p>}
                 </div>
             </section>
-            <Section title="Ingredients">
-                <ul className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
-                    {recipe.ingredients.map((ingredient) => (
-                        <li key={ingredient.ingredient.id} className="flex flex-row items-center gap-2">
-                            <span className="text-stone-600">
-                                <span className="font-bold">
-                                    {ingredient.quantity}
-                                    {ingredient.ingredient.unit === "g" ? "" : " "}
-                                    {ingredient.ingredient.unit === "number"
-                                        ? ""
-                                        : ingredient.quantity !== 1 && ingredient.ingredient.unit !== "g"
-                                        ? `${ingredient.ingredient.unit}s of`
-                                        : `${ingredient.ingredient.unit} of`}
-                                </span>{" "}
-                                {ingredient.ingredient.unit === "number" && ingredient.quantity > 1
-                                    ? `${ingredient.ingredient.label.toLowerCase()}s`
-                                    : ingredient.ingredient.label.toLowerCase()}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </Section>
-            <Section title="Instructions">
-                <ol className="flex max-w-2xl flex-col gap-2">
-                    {recipe.instructions.map((instruction, i) => (
-                        <li key={instruction} className="flex flex-col gap-1">
-                            <span className="font-bold">Step {i + 1}</span>
-                            <span className="text-stone-600">{instruction}</span>
-                        </li>
-                    ))}
-                </ol>
-            </Section>
+            {recipe.ingredients.length > 0 && (
+                <Section title="Ingredients">
+                    <ul className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+                        {recipe.ingredients.map((ingredient) => (
+                            <li key={ingredient.ingredient.id} className="flex flex-row items-center gap-2">
+                                <span className="text-stone-600">
+                                    <span className="font-bold">
+                                        {ingredient.quantity}
+                                        {ingredient.ingredient.unit === "g" ? "" : " "}
+                                        {ingredient.ingredient.unit === "number"
+                                            ? ""
+                                            : ingredient.quantity !== 1 && ingredient.ingredient.unit !== "g"
+                                            ? `${ingredient.ingredient.unit}s of`
+                                            : `${ingredient.ingredient.unit} of`}
+                                    </span>{" "}
+                                    {ingredient.ingredient.unit === "number" && ingredient.quantity > 1
+                                        ? `${ingredient.ingredient.label.toLowerCase()}s`
+                                        : ingredient.ingredient.label.toLowerCase()}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </Section>
+            )}
+            {recipe.instructions.length > 0 && (
+                <Section title="Instructions">
+                    <ol className="flex max-w-2xl flex-col gap-2">
+                        {recipe.instructions.map((instruction, i) => (
+                            <li key={instruction} className="flex flex-col gap-1">
+                                <span className="font-bold">Step {i + 1}</span>
+                                <span className="text-stone-600">{instruction}</span>
+                            </li>
+                        ))}
+                    </ol>
+                </Section>
+            )}
             <Comments recipeId={recipe.id} />
         </section>
     );
