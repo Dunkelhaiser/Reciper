@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import TextareaAutosize from "react-textarea-autosize";
 import toast from "react-hot-toast";
 import { CommentForm, schema } from "@models/schemes/Comment";
 import Button from "@ui/Button";
@@ -47,9 +48,8 @@ const NewComment = ({ recipeId, session }: Props) => {
             onSubmit={handleSubmit((data) => mutate(data))}
         >
             <h3 className="mb-4 text-xl font-bold">Write a comment</h3>
-            <textarea
+            <TextareaAutosize
                 {...register("comment")}
-                rows={5}
                 className="resize-none self-stretch rounded-lg bg-stone-100 px-4 py-2 text-stone-700 outline-none ring-orange-200 ring-offset-2 transition focus:ring-2"
             />
             <Button className="mt-3" type="submit" disabled={!isValid} loading={isLoading}>
