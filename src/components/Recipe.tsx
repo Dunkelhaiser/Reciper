@@ -11,7 +11,7 @@ import { Recipe as RecipeType } from "@models/Recipe";
 type Props = AriaButtonProps &
     AnchorHTMLAttributes<HTMLAnchorElement> & {
         className?: string;
-        recipe: RecipeType;
+        recipe: Omit<RecipeType, "author" | "comments" | "category">;
     };
 
 const Recipe = forwardRef<HTMLAnchorElement, Props>((props, forwardedRef) => {
