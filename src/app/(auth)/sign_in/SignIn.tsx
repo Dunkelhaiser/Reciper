@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn as signInNext } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ import { signIn } from "@lib/auth";
 
 const SignIn = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const callbackUrl = searchParams.get("callbackUrl") ?? "/";
     const {
         register,
@@ -30,8 +31,7 @@ const SignIn = () => {
                 toast.error(data.error);
             } else {
                 toast.success("Signed in successfully");
-                // eslint-disable-next-line no-restricted-globals
-                location.reload();
+                router.refresh();
             }
         },
         onError() {

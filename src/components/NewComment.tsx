@@ -1,10 +1,11 @@
 "use client";
 
 import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { CommentForm, schema } from "@models/schemes/Comment";
 import Button from "@ui/Button";
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const NewComment = ({ recipeId, session }: Props) => {
-    const queryClient = useQueryClient();
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -29,7 +30,7 @@ const NewComment = ({ recipeId, session }: Props) => {
         onSuccess(data) {
             toast.success(data.message);
             reset();
-            queryClient.refetchQueries(["comments"]);
+            router.refresh();
         },
         onError(err) {
             if (err instanceof AxiosError) {

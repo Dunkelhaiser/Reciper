@@ -1,28 +1,34 @@
-"use client";
-
-import { Session } from "next-auth";
-import { useQuery } from "@tanstack/react-query";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@auth";
+import db from "@db";
 import NewComment from "@components/NewComment";
 import Comment from "@components/Comment";
-import { getComments } from "@lib/recipes";
 import Section from "./Section";
 
 interface Props {
     recipeId: string;
-    session: Session | null;
 }
 
-const Comments = ({ session, recipeId }: Props) => {
-    const { data } = useQuery({
-        queryKey: ["comments"],
-        queryFn: () => getComments(recipeId),
+const Comments = async ({ recipeId }: Props) => {
+    const session = await getServerSession(authOptions);
+
+    const comments = await db.comment.findMany({
+        where: {
+            recipeId,
+        },
+        include: {
+            author: true,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
     });
 
     return (
         <Section title="Comments">
             {session?.user && <NewComment recipeId={recipeId} session={session} />}
             <ul className="mt-6 flex max-w-2xl flex-col gap-4">
-                {data?.comments.map((comment) => (
+                {comments.map((comment) => (
                     <li key={comment.id}>
                         <Comment comment={comment} />
                     </li>

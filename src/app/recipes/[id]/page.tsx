@@ -1,4 +1,3 @@
-import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { FaClock, FaFire, FaThumbsDown, FaThumbsUp } from "react-icons/fa";
@@ -6,12 +5,9 @@ import db from "@db";
 import { formatDate } from "@utils/formatDate";
 import Section from "@components/sections/Section";
 import Button from "@components/ui/Button";
-import { authOptions } from "@auth";
 import Comments from "@components/sections/Comments";
 
 const Recipe = async ({ params }: { params: { id: string } }) => {
-    const session = await getServerSession(authOptions);
-
     const recipe = await db.recipe.findFirst({
         where: {
             id: params.id,
@@ -83,6 +79,17 @@ const Recipe = async ({ params }: { params: { id: string } }) => {
                             <span className="text-sm text-stone-500">113</span>
                         </div>
                     </div>
+                    {recipe.category && (
+                        <div className="mt-2 flex flex-row items-center gap-2">
+                            <span className="text-sm text-stone-500">Categories:</span>
+                            {recipe.category.map((category, i) => (
+                                <span key={category.id} className="text-sm text-stone-500">
+                                    {category.title}
+                                    {i !== recipe.category.length - 1 && ", "}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                     {recipe.description && <p className="mt-2 text-stone-600">{recipe.description}</p>}
                 </div>
             </section>
@@ -118,7 +125,7 @@ const Recipe = async ({ params }: { params: { id: string } }) => {
                     ))}
                 </ol>
             </Section>
-            <Comments recipeId={recipe.id} session={session} />
+            <Comments recipeId={recipe.id} />
         </section>
     );
 };

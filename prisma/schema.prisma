@@ -83,8 +83,7 @@ model Recipe {
     time        Int?
     instructions String[]
     image       String
-    category    Category? @relation(fields: [categoryId], references: [id])
-    categoryId  String?
+    category    Category[]
     author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId    String
     comments    Comment[]
