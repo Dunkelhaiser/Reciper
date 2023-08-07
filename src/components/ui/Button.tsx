@@ -39,6 +39,7 @@ export const variants = cva(
         "data-[focus-visible=true]:ring-2",
         "disabled:!cursor-not-allowed",
         "disabled:!shadow-sm",
+        "select-none",
     ],
     {
         variants: {
