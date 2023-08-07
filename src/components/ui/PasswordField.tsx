@@ -12,9 +12,11 @@ interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: UseFormRegister<any>;
     errors?: FieldError;
+    variant?: "box" | "line";
+    size?: "small" | "normal" | "large";
 }
 
-const PasswordField: React.FC<Props> = ({ name, placeholder, value, register, errors }) => {
+const PasswordField: React.FC<Props> = ({ name, placeholder, value, register, errors, variant, size }) => {
     const [showPsd, setShowPsd] = useToggle();
 
     const eyeIcon = (
@@ -36,6 +38,8 @@ const PasswordField: React.FC<Props> = ({ name, placeholder, value, register, er
                 value={value}
                 register={register}
                 errors={errors}
+                variant={variant}
+                size={size}
             />
             {eyeIcon}
         </div>

@@ -41,10 +41,16 @@ const SignUp = () => {
     return (
         <Form label="Sign Up" onSubmit={handleSubmit((data) => mutate(data))}>
             <div className="mb-2 flex flex-col gap-2 md:mb-4">
-                <Input name="username" placeholder="Username" register={register} errors={errors.username} />
-                <Input name="email" placeholder="Email" register={register} errors={errors.email} />
-                <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} />
-                <PasswordField name="confirmPassword" placeholder="Confirm Password" register={register} errors={errors.confirmPassword} />
+                <Input name="username" placeholder="Username" register={register} errors={errors.username} variant="line" />
+                <Input name="email" placeholder="Email" register={register} errors={errors.email} variant="line" />
+                <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} variant="line" />
+                <PasswordField
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    register={register}
+                    errors={errors.confirmPassword}
+                    variant="line"
+                />
             </div>
             <Button className="mt-4 w-full" type="submit" loading={isLoading} disabled={!isValid}>
                 Sign Up

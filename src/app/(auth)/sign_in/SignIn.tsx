@@ -46,8 +46,8 @@ const SignIn = () => {
             </Button>
             <p className="mb-1 mt-3 text-center text-lg font-medium uppercase">or</p>
             <div className="mb-2 flex flex-col gap-2 md:mb-4">
-                <Input name="email" placeholder="Email" register={register} errors={errors.email} />
-                <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} />
+                <Input name="email" placeholder="Email" register={register} errors={errors.email} variant="line" />
+                <PasswordField name="password" placeholder="Password" register={register} errors={errors.password} variant="line" />
             </div>
             <Button className="mt-4 w-full" type="submit" loading={isLoading} disabled={!isValid}>
                 Sign In
