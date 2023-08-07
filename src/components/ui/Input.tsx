@@ -19,14 +19,17 @@ const variants = cva(
         "transition",
         "ring-offset-0",
         "ring-stone-700",
-        "data-[hovered=true]:ring-1",
-        "data-[focus-visible=true]:ring-1",
-        "data-[focused=true]:ring-1",
     ],
     {
         variants: {
             variant: {
-                box: ["border", "rounded-xl"],
+                box: [
+                    "border",
+                    "rounded-xl",
+                    "data-[hovered=true]:ring-1",
+                    "data-[focus-visible=true]:ring-1",
+                    "data-[focused=true]:ring-1",
+                ],
                 line: ["bg-transparent", "border-b"],
             },
             textSize: {
