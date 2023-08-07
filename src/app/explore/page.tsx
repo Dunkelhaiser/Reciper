@@ -1,3 +1,4 @@
+import CreateButton from "@components/CreateButton";
 import Recipe from "@components/Recipe";
 import Section from "@components/sections/Section";
 import db from "@db";
@@ -19,6 +20,7 @@ const Explore = async () => {
                     <Recipe recipe={recipe} />
                 ))}
             </div>
+            <CreateButton />
         </Section>
     );
 };

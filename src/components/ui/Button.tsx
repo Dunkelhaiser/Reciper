@@ -21,7 +21,7 @@ const Loader = ({ className }: { className?: string }) => {
     );
 };
 
-const variants = cva(
+export const variants = cva(
     [
         "flex",
         "items-center",
@@ -136,6 +136,10 @@ const variants = cva(
                     "!py-0",
                 ],
             },
+            layout: {
+                default: [],
+                floating: ["fixed", "bottom-8", "right-8 lg:right-20 xl:right-40", "z-50", "aspect-square", "rounded-full"],
+            },
             size: {
                 small: ["text-sm", "px-[0.6563rem]", "py-[0.4063rem]"],
                 normal: ["px-[0.9063rem]", "py-[0.4063rem]"],
@@ -144,13 +148,14 @@ const variants = cva(
         },
         defaultVariants: {
             variant: "primary",
+            layout: "default",
             size: "normal",
         },
     }
 );
 
 const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
-    const { children, className, loading, disabled, variant, type = "button", size, ...rest } = props;
+    const { children, className, loading, disabled, variant, layout, type = "button", size, ...rest } = props;
     const ref = useRef<HTMLButtonElement>(null);
     const { buttonProps, isPressed } = useButton({ ...props, isDisabled: disabled || loading }, ref);
     const { hoverProps, isHovered } = useHover(props);
@@ -159,7 +164,7 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
         <button
             ref={mergeRefs([ref, forwardedRef])}
             {...rest}
-            className={twMerge(variants({ variant, size, className }))}
+            className={twMerge(variants({ variant, layout, size, className }))}
             type={type}
             {...mergeProps(buttonProps, hoverProps, focusProps)}
             data-loading={loading}
