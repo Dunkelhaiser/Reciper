@@ -33,6 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                             "container mb-[56px] flex h-full min-h-[calc(100vh_-_56px)] flex-col gap-8 px-8 py-8 md:mb-0 md:mt-[64px] md:min-h-[calc(100vh_-_64px)] lg:px-20 xl:px-40"
                         )}
                     >
+                        <div id="overlays" className="absolute" />
                         {children}
                     </main>
                 </Providers>

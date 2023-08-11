@@ -3,10 +3,11 @@
 import clsx from "clsx";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { ButtonHTMLAttributes, forwardRef, useRef } from "react";
+import { ButtonHTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useButton, AriaButtonProps, useHover, useFocusRing, mergeProps } from "react-aria";
 import { mergeRefs } from "react-merge-refs";
+import { createPortal } from "react-dom";
 
 type Props = AriaButtonProps &
     ButtonHTMLAttributes<HTMLButtonElement> &
@@ -141,7 +142,14 @@ const variants = cva(
             },
             layout: {
                 default: [],
-                floating: ["fixed", "bottom-8", "right-8 lg:right-20 xl:right-40", "z-50", "aspect-square", "rounded-full"],
+                floating: [
+                    "fixed",
+                    "bottom-[78px] sm:bottom-8",
+                    "right-8 lg:right-20 xl:right-40",
+                    "z-50",
+                    "aspect-square",
+                    "rounded-full",
+                ],
             },
             size: {
                 small: ["text-sm", "px-[0.6563rem]", "py-[0.4063rem]"],
@@ -158,13 +166,15 @@ const variants = cva(
 );
 
 const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
     const { children, className, loading, disabled, variant, layout, asChild = false, type = "button", size, ...rest } = props;
     const ref = useRef<HTMLButtonElement>(null);
     const { buttonProps, isPressed } = useButton({ ...props, isDisabled: disabled || loading }, ref);
     const { hoverProps, isHovered } = useHover(props);
     const { focusProps, isFocusVisible } = useFocusRing(props);
     const Comp = asChild ? Slot : "button";
-    return (
+    const Btn = (
         <Comp
             ref={mergeRefs([ref, forwardedRef])}
             {...rest}
@@ -200,6 +210,7 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
             )}
         </Comp>
     );
+    return layout === "floating" ? (mounted ? createPortal(Btn, document.querySelector("#overlays") as HTMLDivElement) : null) : Btn;
 });
 
 Button.displayName = "Button";
