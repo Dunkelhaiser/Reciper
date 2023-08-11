@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
 import { ButtonHTMLAttributes, forwardRef, useRef } from "react";
 import { twMerge } from "tailwind-merge";
@@ -11,6 +12,7 @@ type Props = AriaButtonProps &
     ButtonHTMLAttributes<HTMLButtonElement> &
     VariantProps<typeof variants> & {
         loading?: boolean;
+        asChild?: boolean;
     };
 
 const Loader = ({ className }: { className?: string }) => {
@@ -21,7 +23,7 @@ const Loader = ({ className }: { className?: string }) => {
     );
 };
 
-export const variants = cva(
+const variants = cva(
     [
         "flex",
         "items-center",
@@ -156,13 +158,14 @@ export const variants = cva(
 );
 
 const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
-    const { children, className, loading, disabled, variant, layout, type = "button", size, ...rest } = props;
+    const { children, className, loading, disabled, variant, layout, asChild = false, type = "button", size, ...rest } = props;
     const ref = useRef<HTMLButtonElement>(null);
     const { buttonProps, isPressed } = useButton({ ...props, isDisabled: disabled || loading }, ref);
     const { hoverProps, isHovered } = useHover(props);
     const { focusProps, isFocusVisible } = useFocusRing(props);
+    const Comp = asChild ? Slot : "button";
     return (
-        <button
+        <Comp
             ref={mergeRefs([ref, forwardedRef])}
             {...rest}
             className={twMerge(variants({ variant, layout, size, className }))}
@@ -173,23 +176,29 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, forwardedRef) => {
             data-hovered={isHovered}
             data-focus-visible={isFocusVisible}
         >
-            {loading && (
-                <Loader
-                    className={clsx({
-                        "border-stone-700": variant === "secondary" || variant === "ghost",
-                        "border-orange-300": variant === "outline" || variant === "link",
-                    })}
-                />
+            {!asChild ? (
+                <>
+                    {loading && (
+                        <Loader
+                            className={clsx({
+                                "border-stone-700": variant === "secondary" || variant === "ghost",
+                                "border-orange-300": variant === "outline" || variant === "link",
+                            })}
+                        />
+                    )}
+                    <span
+                        className={clsx("flex items-center justify-center gap-2 transition", {
+                            "opacity-0": loading,
+                            "opacity-100": !loading,
+                        })}
+                    >
+                        {children}
+                    </span>
+                </>
+            ) : (
+                children
             )}
-            <span
-                className={clsx("flex items-center justify-center gap-2 transition", {
-                    "opacity-0": loading,
-                    "opacity-100": !loading,
-                })}
-            >
-                {children}
-            </span>
-        </button>
+        </Comp>
     );
 });
 
