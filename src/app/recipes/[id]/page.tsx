@@ -16,7 +16,10 @@ export const generateMetadata = async ({ params }: { params: { id: string } }): 
     });
 
     if (!recipe) {
-        return notFound();
+        return {
+            title: "Recipe not found",
+            description: "The recipe you are looking for does not exist.",
+        };
     }
 
     return {
