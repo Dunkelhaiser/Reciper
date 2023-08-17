@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { FaClock, FaFire, FaThumbsDown, FaThumbsUp } from "react-icons/fa";
@@ -6,6 +7,23 @@ import { formatDate } from "@utils/formatDate";
 import Section from "@components/sections/Section";
 import Button from "@components/ui/Button";
 import Comments from "@components/sections/Comments";
+
+export const generateMetadata = async ({ params }: { params: { id: string } }): Promise<Metadata> => {
+    const recipe = await db.recipe.findFirst({
+        where: {
+            id: params.id,
+        },
+    });
+
+    if (!recipe) {
+        return notFound();
+    }
+
+    return {
+        title: recipe.title,
+        description: recipe.description,
+    };
+};
 
 const Recipe = async ({ params }: { params: { id: string } }) => {
     const recipe = await db.recipe.findFirst({
